@@ -1,2 +1,4 @@
 # aws_ec2_instance_info
-List information about instances on EC2 at AWS
+Running aws_favil.py will output the following data in a CSV format:
+INSTANCE	PUBLIC IP	PUBLIC DNS	PRIVATE IP	PRIVATE DNS	HOSTNAME	INSTANCE TYPE
+
