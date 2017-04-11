@@ -9,7 +9,7 @@ class ec2():
                                                aws_secret_access_key=self.asak)
     def listaInstancias(self,instancia):
         if instancia == None:
-            reserva = self.interface.get_all_instances(self.instancia)
+            reserva = self.interface.get_all_instances()
         else:
             reserva = self.interface.get_all_instances(filters={'instance-id': instancia})
         for i in reserva:
