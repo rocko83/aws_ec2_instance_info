@@ -37,9 +37,25 @@ def get_args():
                         action='store',
                         help='Utilize para listar informações de uma instancia específica. '
                              'É preciso especificar o ID da instancia')
+    bloqueio = parser.add_argument_group('disableApiTermination', 'Verifique, bloqueie os desbloqueie o TERMINATION de instancias do EC2.')
+    bloqueio.add_argument('--bloquear',
+                          required=False,
+                          action='store',
+                          help='Bloqueia uma instancia do EC2 para o APITermination.')
+    bloqueio.add_argument('--desbloquear',
+                          required=False,
+                          action='store',
+                          help='Desbloqueia uma instancia do EC2 para o APITermination.')
+    bloqueio.add_argument('--verificar',
+                          required=False,
+                          action='store',
+                          help='Verifica se uma instancia do EC2 está bloqueada para o APITermination.')
     args = parser.parse_args()
 
     return args
+def erroExclusaoMutuaBloqueio():
+    print("Erro, mais de um arqgumento do bloqueio de API foi passado")
+    exit(1)
 args = get_args()
 sys.path.insert(0,'./classes')
 instancia = ec2.ec2(args.region, args.access, args.key)
@@ -51,4 +67,21 @@ if args.listar_instancias == True:
             instancia.listaInstancias(None)
         else:
             instancia.listaInstancias(args.instancia)
-
+if args.bloquear is not None:
+    if args.desbloquear is not None:
+        erroExclusaoMutuaBloqueio()
+    if args.verificar is not None:
+        erroExclusaoMutuaBloqueio()
+    instancia.bloquearInstancia(args.bloquear)
+if args.desbloquear is not None:
+    if args.bloquear is not None:
+        erroExclusaoMutuaBloqueio()
+    if args.verificar is not None:
+        erroExclusaoMutuaBloqueio()
+    instancia.desbloquearInstancia(args.desbloquear)
+if args.verificar is not None:
+    if args.bloquear is not None:
+        erroExclusaoMutuaBloqueio()
+    if args.desbloquear is not None:
+        erroExclusaoMutuaBloqueio()
+    instancia.listarTerminate(args.verificar)

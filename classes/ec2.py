@@ -33,3 +33,11 @@ class ec2():
                   i.instances[0].tags['Name'],
                   i.instances[0].state,
                   i.instances[0].instance_type)
+    def listarTerminate(self,instancia):
+        print(instancia,self.interface.get_instance_attribute(instancia, 'disableApiTermination'))
+    def bloquearInstancia(self,instancia):
+        self.interface.modify_instance_attribute(instancia, 'disableApiTermination', True)
+        self.listarTerminate(instancia)
+    def desbloquearInstancia(self,instancia):
+        self.interface.modify_instance_attribute(instancia, 'disableApiTermination', False)
+        self.listarTerminate(instancia)
