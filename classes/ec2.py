@@ -10,25 +10,23 @@ class ec2():
     def listaInstancias(self):
         reserva = self.interface.get_all_instances()
         for i in reserva:
-            print(i.instances[0].id + "," +
-                  i.instances[0].ip_address + "," +
-                  i.instances[0].public_dns_name + "," +
-                  i.instances[0].private_ip_address + "," +
-                  i.instances[0].private_dns_name + "," +
-                  i.instances[0].tags['Name'] + "," +
-                  i.instances[0].state + "," +
+            print(i.instances[0].id,
+                  i.instances[0].ip_address,
+                  i.instances[0].public_dns_name,
+                  i.instances[0].private_ip_address,
+                  i.instances[0].private_dns_name,
+                  i.instances[0].tags['Name'],
+                  i.instances[0].state,
                   i.instances[0].instance_type)
-        #print(dir(reserva[0].instances[0]))
     def listarInstanciasLigadas(self):
-        reserva = self.interface.get_all_instances()
+        reserva = self.interface.get_all_reservations(
+            filters={'instance-state-name': 'running'})
         for i in reserva:
-            if i.instances[0].state == "running" :
-                print(i.instances[0].id + "," +
-                      i.instances[0].ip_address + "," +
-                      i.instances[0].public_dns_name + "," +
-                      i.instances[0].private_ip_address + "," +
-                      i.instances[0].private_dns_name + "," +
-                      i.instances[0].tags['Name'] + "," +
-                      i.instances[0].state + "," +
-                      i.instances[0].instance_type)
-            # print(dir(reserva[0].instances[0]))
+            print(i.instances[0].id,
+                  i.instances[0].ip_address,
+                  i.instances[0].public_dns_name,
+                  i.instances[0].private_ip_address,
+                  i.instances[0].private_dns_name,
+                  i.instances[0].tags['Name'],
+                  i.instances[0].state,
+                  i.instances[0].instance_type)
