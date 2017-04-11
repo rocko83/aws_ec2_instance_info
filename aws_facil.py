@@ -32,7 +32,13 @@ def get_args():
                         required=False,
                         action='store_true',
                         help='Utilize para listar instancias ligadas')
+    listar.add_argument('--instancia',
+                        required=False,
+                        action='store',
+                        help='Utilize para listar informações de uma instancia específica. '
+                             'É preciso especificar o ID da instancia')
     args = parser.parse_args()
+
     return args
 args = get_args()
 sys.path.insert(0,'./classes')
@@ -41,5 +47,8 @@ if args.listar_instancias == True:
     if args.ligadas == True:
         instancia.listarInstanciasLigadas()
     else:
-        instancia.listaInstancias()
+        if args.instancia == None:
+            instancia.listaInstancias(None)
+        else:
+            instancia.listaInstancias(args.instancia)
 

@@ -7,8 +7,11 @@ class ec2():
         self.asak=asak
         self.interface = boto.ec2.connect_to_region(self.regiao, aws_access_key_id=self.aaki,
                                                aws_secret_access_key=self.asak)
-    def listaInstancias(self):
-        reserva = self.interface.get_all_instances()
+    def listaInstancias(self,instancia):
+        if instancia == None:
+            reserva = self.interface.get_all_instances(self.instancia)
+        else:
+            reserva = self.interface.get_all_instances(filters={'instance-id': instancia})
         for i in reserva:
             print(i.instances[0].id,
                   i.instances[0].ip_address,
