@@ -12,49 +12,48 @@ def get_args():
     parser.add_argument('--region',
                         required=True,
                         action='store',
-                        help='Regiao de disponibilidade da AWS')
+                        help='Select the avaiability zone')
 
     parser.add_argument('--access',
                         required=True,
                         action='store',
-                        help="Chave aws_access_key_id para autencacao a AWS")
+                        help="The access ID for a AWS account with EC2 credential")
 
     parser.add_argument('--key',
                         required=True,
                         action='store',
-                        help='Segredo da chave aws_access_key_id da conta AWS')
+                        help='Secret id for the access ID')
     parser.add_argument('--listar_instancias',
                         required=False,
                         action='store_true',
-                        help='Lista instnacias na AWS por região')
-    listar = parser.add_argument_group('Listar', 'Utilize somente com "--listar_instancias"')
+                        help='List instances per region')
+    listar = parser.add_argument_group('List', 'Use only with "--listar_instancias"')
     listar.add_argument('--ligadas',
                         required=False,
                         action='store_true',
-                        help='Utilize para listar instancias ligadas')
+                        help='List instances in "running" state')
     listar.add_argument('--instancia',
                         required=False,
                         action='store',
-                        help='Utilize para listar informações de uma instancia específica. '
-                             'É preciso especificar o ID da instancia')
-    bloqueio = parser.add_argument_group('disableApiTermination', 'Verifique, bloqueie os desbloqueie o TERMINATION de instancias do EC2.')
+                        help='Show data for a specific instance')
+    bloqueio = parser.add_argument_group('disableApiTermination', 'Checks wherever a EC2 instance has the termination API enabled')
     bloqueio.add_argument('--bloquear',
                           required=False,
                           action='store',
-                          help='Bloqueia uma instancia do EC2 para o APITermination.')
+                          help='Disable the Termination protection')
     bloqueio.add_argument('--desbloquear',
                           required=False,
                           action='store',
-                          help='Desbloqueia uma instancia do EC2 para o APITermination.')
+                          help='Enable the termination protection')
     bloqueio.add_argument('--verificar',
                           required=False,
                           action='store',
-                          help='Verifica se uma instancia do EC2 está bloqueada para o APITermination.')
+                          help='Print the termination protection flag for a specific instance')
     args = parser.parse_args()
 
     return args
 def erroExclusaoMutuaBloqueio():
-    print("Erro, mais de um arqgumento do bloqueio de API foi passado")
+    print("Erro, more than one argumente was passed for the APITermination protection.")
     exit(1)
 args = get_args()
 sys.path.insert(0,'./classes')
