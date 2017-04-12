@@ -41,3 +41,9 @@ class ec2():
     def desbloquearInstancia(self,instancia):
         self.interface.modify_instance_attribute(instancia, 'disableApiTermination', False)
         self.listarTerminate(instancia)
+    def stop(self,instancia):
+        print("stop",instancia)
+    def start(self,instancia):
+        print("start",instancia)
+    def terminate(self,instancia):
+        print("terminate",instancia)

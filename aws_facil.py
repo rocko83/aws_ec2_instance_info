@@ -49,11 +49,24 @@ def get_args():
                           required=False,
                           action='store',
                           help='Print the termination protection flag for a specific instance')
+    manage=bloqueio = parser.add_argument_group('Manage Instance status', 'Stop/Start/Terminate an EC2 instance')
+    manage.add_argument('--start',
+                        required=False,
+                        action='store',
+                        help='Start an AWS EC2 instance')
+    manage.add_argument('--stop',
+                        required=False,
+                        action='store',
+                        help='Stop an AWS EC2 instance')
+    manage.add_argument('--terminate',
+                        required=False,
+                        action='store',
+                        help='Terminate an AWS EC2 instance')
     args = parser.parse_args()
 
     return args
-def erroExclusaoMutuaBloqueio():
-    print("Erro, more than one argumente was passed for the APITermination protection.")
+def erroExclusaoMutua():
+    print("Erro, two or more arguments was passed to a mutual exclusive operation")
     exit(1)
 args = get_args()
 sys.path.insert(0,'./classes')
@@ -68,19 +81,43 @@ if args.listar_instancias == True:
             instancia.listaInstancias(args.instancia)
 if args.bloquear is not None:
     if args.desbloquear is not None:
-        erroExclusaoMutuaBloqueio()
+        erroExclusaoMutua()
     if args.verificar is not None:
-        erroExclusaoMutuaBloqueio()
+        erroExclusaoMutua()
     instancia.bloquearInstancia(args.bloquear)
+    exit(0)
 if args.desbloquear is not None:
     if args.bloquear is not None:
-        erroExclusaoMutuaBloqueio()
+        erroExclusaoMutua()
     if args.verificar is not None:
-        erroExclusaoMutuaBloqueio()
+        erroExclusaoMutua()
     instancia.desbloquearInstancia(args.desbloquear)
+    exit(0)
 if args.verificar is not None:
     if args.bloquear is not None:
-        erroExclusaoMutuaBloqueio()
+        erroExclusaoMutua()
     if args.desbloquear is not None:
-        erroExclusaoMutuaBloqueio()
+        erroExclusaoMutua()
     instancia.listarTerminate(args.verificar)
+    exit(0)
+if args.stop is not None:
+    if args.start is not None:
+        erroExclusaoMutua()
+    if args.terminate is not None:
+        erroExclusaoMutua()
+    instancia.stop(args.stop)
+    exit(0)
+if args.start is not None:
+    if args.stop is not None:
+        erroExclusaoMutua()
+    if args.terminate is not None:
+        erroExclusaoMutua()
+    instancia.start(args.start)
+    exit(0)
+if args.terminate is not None:
+    if args.start is not None:
+        erroExclusaoMutua()
+    if args.stop is not None:
+        erroExclusaoMutua()
+    instancia.terminate(args.terminate)
+    exit(0)
