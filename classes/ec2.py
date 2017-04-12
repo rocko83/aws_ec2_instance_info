@@ -42,8 +42,8 @@ class ec2():
         self.interface.modify_instance_attribute(instancia, 'disableApiTermination', False)
         self.listarTerminate(instancia)
     def stop(self,instancia):
-        print("stop",instancia)
+        self.interface.stop_instances(instancia)
     def start(self,instancia):
-        print("start",instancia)
+        self.interface.start_instances(instancia)
     def terminate(self,instancia):
-        print("terminate",instancia)
+        self.interface.terminate_instances(instancia)
