@@ -28,14 +28,18 @@ def get_args():
                         action='store_true',
                         help='List instances per region')
     listar = parser.add_argument_group('List', 'Use only with "--listar_instancias"')
-    listar.add_argument('--ligadas',
-                        required=False,
-                        action='store_true',
-                        help='List instances in "running" state')
     listar.add_argument('--instancia',
                         required=False,
                         action='store',
                         help='Show data for a specific instance')
+    listar.add_argument('--state',
+                        required=False,
+                        action='store',
+                        help='Especify the state of the instaces for filtering. Ex.: pending | running | shutting-down | terminated | stopping | stopped')
+    listar.add_argument('--without_tag',
+                        required=False,
+                        action='store_true',
+                        help='Show instances which do not have tag Name')
     bloqueio = parser.add_argument_group('disableApiTermination', 'Checks wherever a EC2 instance has the termination API enabled')
     bloqueio.add_argument('--bloquear',
                           required=False,
@@ -72,13 +76,17 @@ args = get_args()
 sys.path.insert(0,'./classes')
 instancia = ec2.ec2(args.region, args.access, args.key)
 if args.listar_instancias == True:
-    if args.ligadas == True:
-        instancia.listarInstanciasLigadas()
+    if args.state is not None:
+        instancia.listaInstancias(args.state,None)
     else:
-        if args.instancia == None:
-            instancia.listaInstancias(None)
+        if args.without_tag == True:
+            instancia.listWithoutTag()
         else:
-            instancia.listaInstancias(args.instancia)
+            if args.instancia is not None:
+                instancia.listaInstancias(None,None)
+            else:
+                instancia.listaInstancias(None,args.instancia)
+
 if args.bloquear is not None:
     if args.desbloquear is not None:
         erroExclusaoMutua()
