@@ -1,4 +1,5 @@
 import boto.ec2
+import json
 
 class ec2():
     def __init__(self,regiao,aaki,asak):
@@ -13,24 +14,32 @@ class ec2():
         else:
             reserva = self.interface.get_all_instances(filters={'instance-id': instancia})
         for i in reserva:
+            if 'Name' not in i.instances[0].tags:
+                tag_name = "None"
+            else:
+                tag_name = i.instances[0].tags['Name']
             print(i.instances[0].id,
                   i.instances[0].ip_address,
                   i.instances[0].public_dns_name,
                   i.instances[0].private_ip_address,
                   i.instances[0].private_dns_name,
-                  i.instances[0].tags['Name'],
+                  tag_name,
                   i.instances[0].state,
                   i.instances[0].instance_type)
     def listarInstanciasLigadas(self):
         reserva = self.interface.get_all_reservations(
             filters={'instance-state-name': 'running'})
         for i in reserva:
+            if 'Name' not in i.instances[0].tags:
+                tag_name = "None"
+            else:
+                tag_name = i.instances[0].tags['Name']
             print(i.instances[0].id,
                   i.instances[0].ip_address,
                   i.instances[0].public_dns_name,
                   i.instances[0].private_ip_address,
                   i.instances[0].private_dns_name,
-                  i.instances[0].tags['Name'],
+                  tag_name,
                   i.instances[0].state,
                   i.instances[0].instance_type)
     def listarTerminate(self,instancia):
